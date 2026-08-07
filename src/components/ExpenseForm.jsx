@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export default function ExpenseForm() {
   const [expenses, setExpenses] = useState([]);
+  const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [isUpdate, setIsUpdate] = useState({
     isUpdate: false,
     expenseId: "",
@@ -66,6 +67,7 @@ export default function ExpenseForm() {
       date: formData.date,
     });
     setExpenses([...expenses, formData]);
+    setFilteredExpenses([...expenses, formData]);
     setFormData({
       name: "",
       amount: "",
@@ -80,6 +82,7 @@ export default function ExpenseForm() {
     const updatedExpenses = expenses.filter((expense, i) => index !== i);
     console.log(updatedExpenses);
     setExpenses(updatedExpenses);
+    setFilteredExpenses(updatedExpenses);
   };
 
   const editExpense = (index) => {
@@ -107,6 +110,7 @@ export default function ExpenseForm() {
       date: formData.date,
     };
     setExpenses(updatedExpenses);
+    setFilteredExpenses(updatedExpenses);
     setFormData({
       name: "",
       amount: "",
@@ -114,6 +118,18 @@ export default function ExpenseForm() {
       date: "",
     });
     setIsUpdate({ isUpdate: true, expenseId: "" });
+  };
+
+  const filter = (category) => {
+    if (category === "") {
+      setFilteredExpenses([...expenses]);
+      return;
+    }
+    const filteredData = expenses.filter(
+      (expense, i) => category === expense.category,
+    );
+    console.log(filteredData);
+    setFilteredExpenses(filteredData);
   };
   return (
     <>
@@ -178,7 +194,7 @@ export default function ExpenseForm() {
           <button>Add Expense</button>
         )}
       </form>
-      {expenses.map((expense, index) => (
+      {filteredExpenses.map((expense, index) => (
         <div key={index} className="expenseContainer">
           <div className="expenseName">
             Expense: <span> {expense.name}</span>
@@ -209,6 +225,31 @@ export default function ExpenseForm() {
           </button>
         </div>
       ))}
+      {expenses.length !== 0 ? (
+        <div>
+          <div>
+            <select
+              name="filter"
+              id="filter"
+              onChange={(e) => filter(e.target.value)}
+            >
+              <option value="">Filter By</option>
+              <option value="food">Food</option>
+              <option value="shopping">shopping</option>
+              <option value="travel">Travel</option>
+            </select>
+          </div>
+          <div>
+            {" "}
+            Total: ₹{" "}
+            {filteredExpenses.reduce((total, filteredExpense) => {
+              return total + Number(filteredExpense.amount);
+            }, 0)}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 }
