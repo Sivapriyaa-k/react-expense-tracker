@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ExpenseForm() {
-  const [expenses, setExpenses] = useState([]);
-  const [filteredExpenses, setFilteredExpenses] = useState([]);
+  const [expenses, setExpenses] = useState(() => {
+    const storedExpenses = localStorage.getItem("expenses");
+    return storedExpenses ? JSON.parse(storedExpenses) : [];
+  });
+  const [filteredExpenses, setFilteredExpenses] = useState(() => {
+    const storedExpenses = localStorage.getItem("expenses");
+    return storedExpenses ? JSON.parse(storedExpenses) : [];
+  });
   const [isUpdate, setIsUpdate] = useState({
     isUpdate: false,
     expenseId: "",
@@ -20,6 +26,12 @@ export default function ExpenseForm() {
     date: "",
   });
 
+  useEffect(() => {
+    console.log("Saving:", expenses);
+
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+    // console.log(expenses);
+  }, [expenses]);
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -80,7 +92,6 @@ export default function ExpenseForm() {
   const deleteExpense = (index) => {
     // e.preventDefault();
     const updatedExpenses = expenses.filter((expense, i) => index !== i);
-    console.log(updatedExpenses);
     setExpenses(updatedExpenses);
     setFilteredExpenses(updatedExpenses);
   };
@@ -94,7 +105,7 @@ export default function ExpenseForm() {
       category: editExpense.category,
       date: editExpense.date,
     });
-    setIsUpdate({ isUpdate: true, expenseId: index });
+    setIsUpdate({ isUpdate: false, expenseId: index });
   };
 
   const updateExpense = (index) => {
@@ -225,7 +236,7 @@ export default function ExpenseForm() {
           </button>
         </div>
       ))}
-      {expenses.length !== 0 ? (
+      {expenses.length > 0 ? (
         <div>
           <div>
             <select
