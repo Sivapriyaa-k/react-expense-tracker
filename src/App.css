@@ -1,14 +1,10 @@
 html {
-  background-color: #000;
+  background-color: #d3d3d3;
   height: 100%;
-  color: #ce8946;
+  color: #6a6a6a;
 }
 
-#root {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-  padding: 50px 0px;
+.error {
+  color: red;
+  font-size: 14px;
 }
