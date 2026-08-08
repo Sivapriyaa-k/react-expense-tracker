@@ -154,7 +154,7 @@ export default function ExpenseForm() {
             </p>
           </div>
 
-          <div className="expenseDetails flex gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
             <div className="bg-white rounded-2xl p-6 shadow-sm border borrder-gray-200">
               <p className="text-sm font-medium text-gray-500">
                 TOTAL EXPENSE{" "}
@@ -174,9 +174,18 @@ export default function ExpenseForm() {
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-sm border borrder-gray-200">
               <p className="text-sm font-medium text-gray-500">
-                AVERAGE EXPENSE{" "}
+                AVERAGE EXPENSE
               </p>
-              <h2 className="text-3xl font-bold text-[#222] mt-2"></h2>
+              <h2 className="text-3xl font-bold text-[#222] mt-2">
+                ₹
+                {filteredExpenses.length > 0
+                  ? Math.round(
+                      filteredExpenses.reduce((total, filteredExpense) => {
+                        return total + Number(filteredExpense.amount);
+                      }, 0) / filteredExpenses.length,
+                    )
+                  : 0}
+              </h2>
             </div>
           </div>
 
@@ -246,7 +255,7 @@ export default function ExpenseForm() {
                     name="category"
                     id="category"
                     value={formData.category}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 outline-none focus:border-gray-500 focus:ring-2 focus-ring-gray-100"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-100"
                     onChange={(e) =>
                       setFormData({ ...formData, category: e.target.value })
                     }
