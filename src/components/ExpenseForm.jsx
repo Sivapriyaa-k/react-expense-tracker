@@ -144,6 +144,7 @@ export default function ExpenseForm() {
   };
   return (
     <>
+    <h1>Expense tracker</h1>
       <form onSubmit={handleSubmit}>
         <div className="formField">
           <label htmlFor="expensename"> Expense Name</label>

@@ -1,0 +1,14 @@
+html {
+  background-color: #000;
+  height: 100%;
+  color: #ce8946;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  padding: 50px 0px;
+}
